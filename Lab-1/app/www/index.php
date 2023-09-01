@@ -1,4 +1,23 @@
 
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $conn = mysqli_connect('db', 'root', 'test', 'dbname');
+
+    $nombre = $_POST['Nombre'];
+    $apellido = $_POST['Apellido'];
+
+    $query = "INSERT INTO personas (Nombre, Apellido) VALUES ('$nombre', '$apellido')";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        echo "Registro insertado correctamente.";
+    } else {
+        echo "Error al insertar el registro: " . mysqli_error($conn);
+    }
+
+    mysqli_close($conn);
+}
+?>
 <html>
     <head>
         <title>Aplicaciones de Internet</title>
@@ -23,7 +42,7 @@
 
                         $conn = mysqli_connect('db', 'root', 'test', "dbname");
 
-                        $query = 'SELECT * From Person';
+                        $query = 'SELECT * From personas';
                         $result = mysqli_query($conn, $query);
 
                         while($value = $result->fetch_array(MYSQLI_ASSOC)){
@@ -42,5 +61,14 @@
                     </table>
             </div>
         </div>
+        <form action="index.php" method="post">
+            <h1>Ingresa tu nombre</h1>
+            <input type="text" name="Nombre">
+            <h2>Ingresa tu apellido</h2>
+            <input type="text" name="Apellido">
+
+            <button type="submit">Enviar</button>
+
+        </form>    
     </body>
 </html>
