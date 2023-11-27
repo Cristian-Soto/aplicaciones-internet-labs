@@ -14,5 +14,16 @@
             <h1>Aplicaciones de Internet</h1>
         </div>
     </div>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    <div class="container">
+        {% block extra_content %}
+        <a href="{% url 'crear_asignatura' %}" class="btn btn-primary">Crear Nueva Asignatura</a>
+        <a href="{% url 'detalle_asignatura' asignatura_id=1 %}" class="btn btn-primary">Ver asignaturas</a>
+        <a href="{% url 'agregar_alumno' asignatura_id=1 %}" class="btn btn-primary">Agregar alumnos</a>
+        <a href="{% url 'detalle_alumno' alumno_id=1 %}" class="btn btn-info">Ver Detalles de Alumno</a>
+        {% endblock %}
+    </div>
 </body>
 </html>

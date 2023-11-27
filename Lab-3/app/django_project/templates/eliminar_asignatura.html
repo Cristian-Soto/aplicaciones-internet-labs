@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmar Eliminación{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Confirmar Eliminación de Asignatura</h2>
+    <p>¿Estás seguro de que deseas eliminar la asignatura "{{ asignatura.nombre }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a href="{% url 'detalle_asignatura' asignatura.id %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

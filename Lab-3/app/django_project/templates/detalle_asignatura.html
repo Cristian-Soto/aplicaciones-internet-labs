@@ -1,0 +1,39 @@
+{% extends 'index.html' %}
+
+
+{% block header %}<h1>Detalles de Asignatura - {{ asignatura.nombre }}</h1>{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2>{{ asignatura.nombre }} ({{ asignatura.codigo }})</h2>
+        <h3>Alumnos Inscritos:</h3>
+        <ul>
+            {% for alumno in asignatura.alumno_set.all %}
+                <li>{{ alumno.nombre }} {{ alumno.apellido_paterno }} {{ alumno.apellido_materno }} - Fecha de Nacimiento: {{ alumno.fecha_nacimiento }}</li>
+            {% empty %}
+                <li>No hay alumnos inscritos en esta asignatura.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<a href="{% url 'index' %}" class="btn btn-primary">Volver al inicio</a>
+
+<div class="container">
+    <h2>Detalles de Asignatura</h2>
+    <p><strong>Nombre:</strong> {{ asignatura.nombre }}</p>
+    <p><strong>Código:</strong> {{ asignatura.codigo }}</p>
+
+    <!-- Botón para Editar Asignatura -->
+    <a href="{% url 'editar_asignatura' asignatura.id %}" class="btn btn-primary">Editar</a>
+
+    <!-- Botón para Eliminar Asignatura -->
+    <a href="{% url 'eliminar_asignatura' asignatura.id %}" class="btn btn-danger">Eliminar</a>
+
+    <!-- Volver a la lista de asignaturas -->
+    <a href="{% url 'detalle_asignatura' asignatura_id=asignatura.id%}" class="btn btn-secondary">Volver a la Lista de Asignaturas</a>
+</div>
+{% endblock %}
+
+
+
