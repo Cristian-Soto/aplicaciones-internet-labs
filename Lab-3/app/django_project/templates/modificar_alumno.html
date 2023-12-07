@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Agregar Alumno</title>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <title>Modificar Alumno</title>
+    <!-- Agrega referencias a jQuery y jQuery UI -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <style>
@@ -18,6 +19,7 @@
 
         form {
             margin-top: 20px;
+            max-width: 400px; /* Ajusta el ancho del formulario según sea necesario */
         }
 
         label {
@@ -27,11 +29,14 @@
 
         input {
             margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box; /* Incluye el relleno y el borde en el ancho total */
         }
 
         .datepicker-container {
             position: relative;
             display: inline-block;
+            width: 100%;
         }
 
         .datepicker-container input {
@@ -47,6 +52,7 @@
 
         button {
             display: inline-block;
+            width: 48%; /* Ajusta el ancho de los botones según sea necesario */
             padding: 8px 15px;
             font-size: 14px;
             background-color: #3498db;
@@ -54,10 +60,15 @@
             border: none;
             cursor: pointer;
             margin-right: 10px;
+            margin-bottom: 10px;
         }
 
         button:hover {
             background-color: #2980b9;
+        }
+
+        .button-container {
+            text-align: center; /* Centra los botones en el contenedor */
         }
     </style>
     <script>
@@ -73,31 +84,37 @@
     </script>
 </head>
 <body>
-    <h1>Agregar Alumno</h1>
-    <form method="post" action="{% url 'agregar_alumno' asignatura.id %}">
+    <h1>Modificar Alumno</h1>
+    <form method="post" action="{% url 'modificar_alumno' alumno.id %}">
         {% csrf_token %}
         <label for="id_nombre">Nombre:</label>
-        <input type="text" name="nombre" id="id_nombre" required>
+        <input type="text" name="nombre" id="id_nombre" value="{{ alumno.nombre }}" required>
         <label for="id_apellido_paterno">Apellido Paterno:</label>
-        <input type="text" name="apellido_paterno" id="id_apellido_paterno" required>
+        <input type="text" name="apellido_paterno" id="id_apellido_paterno" value="{{ alumno.apellido_paterno }}" required>
         <br>
         <label for="id_apellido_materno">Apellido Materno:</label>
-        <input type="text" name="apellido_materno" id="id_apellido_materno" required>
+        <input type="text" name="apellido_materno" id="id_apellido_materno" value="{{ alumno.apellido_materno }}" required>
         <br>
-
+        
         <!-- Utilizar la clase datepicker-container para incluir el calendario -->
         <div class="datepicker-container">
             <label for="id_fecha_nacimiento">Fecha de Nacimiento:</label>
-            <input type="text" name="fecha_nacimiento" id="id_fecha_nacimiento" required>
+            <input type="text" name="fecha_nacimiento" id="id_fecha_nacimiento" value="{{ alumno.fecha_nacimiento }}" required>
             <span class="ui-datepicker-trigger">&#9660;</span>
         </div>
         <br>
-
-        <button type="submit">Guardar</button>
         
-        <!-- Botón "Volver" -->
-        <button type="button" onclick="window.history.back()">Volver</button>
+        <div class="button-container">
+            <button type="submit">Guardar Cambios</button>
+            <button type="button" onclick="window.history.back()">Volver</button>
+        </div>
+    </form>
+
+    <form method="post" action="{% url 'eliminar_alumno' alumno.id %}">
+        {% csrf_token %}
+        <div class="button-container">
+            <button type="submit" style="background-color: #e74c3c;">Eliminar Alumno</button>
+        </div>
     </form>
 </body>
 </html>
-

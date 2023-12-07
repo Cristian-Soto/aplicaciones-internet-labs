@@ -1,15 +1,15 @@
-{% extends 'base.html' %}
-
-{% block title %}Confirmar Eliminación de Alumno{% endblock %}
-
-{% block content %}
-<div class="container">
-    <h2>Confirmar Eliminación de Alumno</h2>
-    <p>¿Estás seguro de que deseas eliminar al alumno "{{ alumno.nombre }} {{ alumno.apellido_paterno }} {{ alumno.apellido_materno }}"?</p>
-    <form method="post">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar Alumno</title>
+</head>
+<body>
+    <h1>¿Estás seguro de que deseas eliminar a {{ alumno.nombre }} {{ alumno.apellido_paterno }}?</h1>
+    <form method="post" action="{% url 'eliminar_alumno' alumno.id %}">
         {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Eliminar</button>
-        <a href="{% url 'lista_alumnos' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit">Sí, Eliminar</button>
     </form>
-</div>
-{% endblock %}
+    <a href="{% url 'detalle_asignatura' asignatura.id %}">Cancelar</a>
+</body>
+</html>

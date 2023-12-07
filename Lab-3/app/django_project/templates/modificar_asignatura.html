@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Crear Asignatura</title>
+    <title>Modificar Asignatura</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,14 +27,14 @@
         }
 
         button {
-            display: inline-block;  /* Hace que el botón sea en línea con otros elementos */
+            display: inline-block;
             padding: 8px 15px;
             font-size: 14px;
             background-color: #3498db;
             color: #fff;
             border: none;
             cursor: pointer;
-            margin-right: 10px;  /* Espaciado entre los botones */
+            margin-right: 10px;
         }
 
         button:hover {
@@ -43,16 +43,16 @@
     </style>
 </head>
 <body>
-    <h1>Crear Asignatura</h1>
-    <form method="post" action="{% url 'crear_asignatura' %}">
+    <h1>Modificar Asignatura</h1>
+    <form method="post" action="{% url 'modificar_asignatura' asignatura.id %}">
         {% csrf_token %}
         <label for="id_nombre">Nombre:</label>
-        <input type="text" name="nombre" id="id_nombre" required>
+        <input type="text" name="nombre" id="id_nombre" value="{{ asignatura.nombre }}" required>
         <label for="id_codigo">Código:</label>
-        <input type="text" name="codigo" id="id_codigo" required>
+        <input type="text" name="codigo" id="id_codigo" value="{{ asignatura.codigo }}" required>
         
-        <!-- Botones en línea -->
-        <button type="submit">Guardar</button>
+        <button type="submit">Guardar Cambios</button>
+        
         <button type="button" onclick="window.history.back()">Volver</button>
     </form>
 </body>

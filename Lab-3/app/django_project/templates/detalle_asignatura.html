@@ -1,39 +1,83 @@
-{% extends 'index.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle de Asignatura</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
 
+        h1 {
+            color: #333;
+        }
 
-{% block header %}<h1>Detalles de Asignatura - {{ asignatura.nombre }}</h1>{% endblock %}
+        ul {
+            list-style: none;
+            padding: 0;
+        }
 
-{% block content %}
-<div class="card">
-    <div class="card-body">
-        <h2>{{ asignatura.nombre }} ({{ asignatura.codigo }})</h2>
-        <h3>Alumnos Inscritos:</h3>
-        <ul>
-            {% for alumno in asignatura.alumno_set.all %}
-                <li>{{ alumno.nombre }} {{ alumno.apellido_paterno }} {{ alumno.apellido_materno }} - Fecha de Nacimiento: {{ alumno.fecha_nacimiento }}</li>
-            {% empty %}
-                <li>No hay alumnos inscritos en esta asignatura.</li>
-            {% endfor %}
-        </ul>
+        li {
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+
+        a {
+            text-decoration: none;
+            color: #0066cc;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .button-container button {
+            margin-right: 10px;
+            padding: 8px 15px;
+            font-size: 14px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            display: inline-block;  /* Alinea los botones en línea */
+        }
+
+        .button-container button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Detalle de Asignatura - {{ asignatura.nombre }} - {{ asignatura.codigo }}</h1>
+    <ul>
+        {% for alumno in asignatura.alumnos.all %}
+            <li>
+                {{ alumno.nombre }} {{ alumno.apellido_paterno }} {{ alumno.apellido_materno }} - {{ alumno.fecha_nacimiento }}
+                <a href="{% url 'modificar_alumno' alumno.id %}">Modificar</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="button-container">
+        <a href="{% url 'lista_asignaturas' %}">
+            <button>Volver a la Lista de Asignaturas</button>
+        </a>
+        <a href="{% url 'agregar_alumno' asignatura.id %}">
+            <button>Agregar Alumno</button>
+        </a>
+        <a href="{% url 'modificar_asignatura' asignatura.id %}">
+            <button>Modificar Asignatura</button>
+        </a>
+        <a href="{% url 'eliminar_asignatura' asignatura.id %}">
+            <button>Eliminar Asignatura</button>
+        </a>
     </div>
-</div>
-<a href="{% url 'index' %}" class="btn btn-primary">Volver al inicio</a>
-
-<div class="container">
-    <h2>Detalles de Asignatura</h2>
-    <p><strong>Nombre:</strong> {{ asignatura.nombre }}</p>
-    <p><strong>Código:</strong> {{ asignatura.codigo }}</p>
-
-    <!-- Botón para Editar Asignatura -->
-    <a href="{% url 'editar_asignatura' asignatura.id %}" class="btn btn-primary">Editar</a>
-
-    <!-- Botón para Eliminar Asignatura -->
-    <a href="{% url 'eliminar_asignatura' asignatura.id %}" class="btn btn-danger">Eliminar</a>
-
-    <!-- Volver a la lista de asignaturas -->
-    <a href="{% url 'detalle_asignatura' asignatura_id=asignatura.id%}" class="btn btn-secondary">Volver a la Lista de Asignaturas</a>
-</div>
-{% endblock %}
-
-
-
+</body>
+</html>
