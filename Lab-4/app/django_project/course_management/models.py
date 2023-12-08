@@ -14,7 +14,7 @@ class Student(models.Model):
 class Course(models.Model):
     name = models.CharField(max_length=200)
     code = models.CharField(max_length=200,blank=True, null=True)
-    students = models.ManyToManyField(Student,blank=True, null=True)
+    students = models.ManyToManyField(Student)
 
     def __unicode__(self):
         return self.name

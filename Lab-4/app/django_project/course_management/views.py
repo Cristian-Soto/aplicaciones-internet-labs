@@ -10,22 +10,27 @@ def index(request):
     return render(request, 'index.html', {'courses': courses})
 
 def get_now_playing_movies(request):
-    # Configurar la solicitud a la API de TheMovieDB
-    api_key = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YTA2ZjdmODg4OGM4ZDczYjQyYjJhOWE5OWIyYThkNSIsInN1YiI6IjY1NjY1M2IzZDk1NDIwMDBjNDFmNTZlNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.LEJGUFOtTFrs2CdDhB0Sv9uKvQQ-WEKl0k1xoulpxVk'
-    url = 'https://api.themoviedb.org/3/movie/now_playing'
-    params = {'api_key': api_key}
-    
-    # Realizar la solicitud
-    response = requests.get(url, params=params)
+    # URL de la API de TheMovieDB
+    url = "https://api.themoviedb.org/3/movie/now_playing"
 
-    # Verificar si la solicitud fue exitosa
-    if response.status_code == 200:
-        # Obtener la lista de películas
-        data = response.json()
-        movies = data.get('results', [])
-    else:
-        # Manejar el caso en que la solicitud no sea exitosa
-        movies = []
+    # Parámetros de la solicitud, incluyendo la clave de la API
+    params = {
+        "api_key": "6a06f7f8888c8d73b42b2a9a99b2a8d5"  # Reemplaza con tu propia API Key
+    }
 
-    # Renderizar la plantilla con las películas
-    return render(request, 'now_playing_movies.html', {'movies': movies})
+    try:
+        # Realizar la solicitud GET a la API
+        response = requests.get(url, params=params)
+
+        # Verificar si la solicitud fue exitosa (código de respuesta 200)
+        if response.status_code == 200:
+            # Parsear la respuesta JSON
+            data = response.json()
+            movies = data['results']
+            return render(request, 'get_now_playing_movies.html', {'movies': movies})
+        else:
+            # Manejo de errores si la solicitud no fue exitosa
+            return render(request, 'error.html', {'error_message': 'No se pudo obtener la información de las películas'})
+    except Exception as e:
+        # Manejo de excepciones
+        return render(request, 'error.html', {'error_message': str(e)})
