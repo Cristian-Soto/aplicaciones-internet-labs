@@ -2,35 +2,65 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-        <title>Aplicaciones de Internet</title>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href='{% static "css/bootstrap.min.css" %}' type="text/css" />
-        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    </head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicaciones de Internet</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
 <body>
-    <div class="container">
-        <div class="row">
-            <img src="{% static 'images/userena.svg' %}" class="rounded" style="width:200px"/>
-            <h1>Aplicaciones de Internet</h1>
-            <h3>Asignaturas</h3>
-            <table>
+    <header class="bg-dark text-white text-center py-4">
+        <img src="{% static 'images/userena.svg' %}" class="rounded" style="width: 200px" alt="Userena Logo">
+        <h1>Aplicaciones de Internet</h1>
+        <h3>Asignaturas</h3>
+    </header>
+
+    <main class="container mt-4">
+        <section>
+            <h2>Courses</h2>
+            <table class="table">
                 <thead>
                     <tr>
-                        <td>Nombre</td>
-                        <td>Código</td>
-                        <td>Acción</td>
+                        <th>Nombre</th>
+                        <th>Código</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
                     {% for course in courses %}                   
-                        <td>{{ course.name }}</td>
-                        <td>{{ course.code }}</td>
+                        <tr>
+                            <td>{{ course.name }}</td>
+                            <td>{{ course.code }}</td>
+                        </tr>
                     {% endfor %}
-                    </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
+        </section>
+
+        <section class="mt-4">
+            <h2>Now Playing Movies</h2>
+            <div class="card-deck">
+                {% for movie in movies %}
+                    <div class="card">
+                        <img src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}" class="card-img-top" alt="{{ movie.title }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ movie.title }}</h5>
+                            <p class="card-text">{{ movie.overview }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3 mt-4">
+        <p>&copy; 2023 My Site. Todos los derechos reservados.</p>
+        <!-- Puedes personalizar el pie de página según tus necesidades -->
+    </footer>
+
+    <script src="{% static 'tu_script.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
