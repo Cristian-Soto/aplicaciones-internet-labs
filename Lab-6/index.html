@@ -57,20 +57,20 @@
     <script>
         var sampleApp = angular.module('sampleApp', []);
 
-        sampleApp.controller('MoviesController', function ($scope, $http) {
+        sampleApp.controller('MoviesController', function ($scope, $https) {
             $scope.genres = [];
             $scope.selectedGenre = null;
             $scope.selectedMovie = null;
 
             // Cargar géneros al iniciar
-            $http.get('https://api.filmon.com/api/vod/genres').then(function (response) {
+            $https.get('https://api.filmon.com/api/vod/genres').then(function (response) {
                 $scope.genres = response.data.response;
             });
 
             // Función que se llama cuando se selecciona un género
             $scope.updateMovies = function () {
                 if ($scope.selectedGenre && $scope.selectedGenre.slug) {
-                    $http.get('https://api.filmon.com/api/vod/search?genre=' + $scope.selectedGenre.slug).then(function (response) {
+                    $https.get('https://api.filmon.com/api/vod/search?genre=' + $scope.selectedGenre.slug).then(function (response) {
                         $scope.movies = response.data.response;
                     }, function (error) {
                         console.error("Error al cargar películas:", error);
