@@ -1,55 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="sampleApp">
+
 <head>
-
-<meta chrset="UTF 8">
-<title>Movies</title>
-<link rel="stylesheet" href="css/bootstrap.css"/>
+    <meta charset="UTF-8">
+    <title>Pelis</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 </head>
-<body ng-app="sampleApp">
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
-<script src="lib/bootstrap.js"></script>
+<body ng-controller="MoviesController">
 
-<h1> Movies</h1>
-<table class="table table-striped">
-<thead>
-<tr> <th>#</th><th>Ejemplo</th><th>Description</th><th></th> </tr> </thead>
-<tbody>
-<tr>
-<td>l</td><td>l</td><td>Movie 1</td>
-<td><a href="#!Movie/1">Movie details</a></td>
-</tr>
-<tr>
-<td>2</td><td>2</td><td>Movie 2</td>
-<td><a href="#!Movie/2">Movie details</a></td>
-</tr>
-<tr>
-<td>3</td><td>3</td><td>Movie 3</td>
-<td><a href="#!Movie/3">Movie details</a></td>
-</tr>
-</tbody>
-</table>
+    <h1>Peliculas</h1>
 
-<div ng-view></div>
-<script>
-var sampleApp = angular.module('sampleApp',['ngRoute']);
+    <!-- Selector de Géneros -->
+    <select ng-model="selectedGenre" ng-options="genre as genre.name for genre in genres" ng-change="updateMovies()">
+        <option value="">Elige una Categoría</option>
+    </select>
 
-sampleApp.config(
-function($routeProvider){
-$routeProvider.
-when('/Movie/:movieId',{
-templateUrl : 'movie.html',
-controller: 'AngularController'
-})
-});
+    <!-- Tabla de Películas -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Titulo</th>
+                <th>Fecha</th>
+                <th>Detalles</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="movie in movies">
+                <td>{{$index + 1}}</td>
+                <td>{{movie.title}}</td>
+                <td>{{movie.produced_date ? (movie.produced_date | date:'yyyy-MM-dd') : 'No disponible'}}</td>
+                <td><a href="" ng-click="showMovieDetails(movie)">Detalles de Pelicula</a></td>
+            </tr>
+            <tr ng-show="selectedMovie">
+                <td colspan="4">
+                    <div class="movie-details-container">
+                        <h2>Detalles de Pelicula {{selectedMovie.title}} {{selectedMovie.produced_date | date:'yyyy'}}</h2>
+                        <div class="movie-details">
+                            <p>Descripción: {{selectedMovie.description ? selectedMovie.description : 'No disponible'}}</p>
+                            <p>Palabras clave: {{selectedMovie.keywords ? selectedMovie.keywords : 'No disponible'}}</p>
+                            <p>Género: {{selectedMovie.genres ? selectedMovie.genres : 'No disponible'}}</p>
 
-sampleApp.controller('AngularController',function($scope,$routeParams) {
+                            <!-- Coloca la imagen junto a la información -->
+                            <p ng-if="selectedMovie && selectedMovie.poster && selectedMovie.poster.url">
+                                <img ng-src="{{selectedMovie.poster.url}}" alt="Imagen de la película" width="200" height="300">
+                            </p>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-$scope.movieid=$routeParams.MovieId
+    <script>
+        var sampleApp = angular.module('sampleApp', []);
 
-});
-</script>
+        sampleApp.controller('MoviesController', function ($scope, $http) {
+            $scope.genres = [];
+            $scope.selectedGenre = null;
+            $scope.selectedMovie = null;
+
+            // Cargar géneros al iniciar
+            $http.get('http://api.filmon.com/api/vod/genres').then(function (response) {
+                $scope.genres = response.data.response;
+            });
+
+            // Función que se llama cuando se selecciona un género
+            $scope.updateMovies = function () {
+                if ($scope.selectedGenre && $scope.selectedGenre.slug) {
+                    $http.get('http://api.filmon.com/api/vod/search?genre=' + $scope.selectedGenre.slug).then(function (response) {
+                        $scope.movies = response.data.response;
+                    }, function (error) {
+                        console.error("Error al cargar películas:", error);
+                    });
+                }
+            };
+
+            $scope.showMovieDetails = function (movie) {
+                $scope.selectedMovie = $scope.selectedMovie === movie ? null : movie;
+            };
+        });
+    </script>
+
+    <style>
+        .movie-details-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .movie-details {
+            margin-top: 10px;
+        }
+    </style>
 </body>
+
 </html>
