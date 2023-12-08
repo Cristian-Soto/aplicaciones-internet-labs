@@ -63,14 +63,14 @@
             $scope.selectedMovie = null;
 
             // Cargar géneros al iniciar
-            $http.get('http://api.filmon.com/api/vod/genres').then(function (response) {
+            $http.get('https://api.filmon.com/api/vod/genres').then(function (response) {
                 $scope.genres = response.data.response;
             });
 
             // Función que se llama cuando se selecciona un género
             $scope.updateMovies = function () {
                 if ($scope.selectedGenre && $scope.selectedGenre.slug) {
-                    $http.get('http://api.filmon.com/api/vod/search?genre=' + $scope.selectedGenre.slug).then(function (response) {
+                    $http.get('https://api.filmon.com/api/vod/search?genre=' + $scope.selectedGenre.slug).then(function (response) {
                         $scope.movies = response.data.response;
                     }, function (error) {
                         console.error("Error al cargar películas:", error);
